@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" >
+    <title>Main Page</title>
+</head>
+<body>
+	<header>
+		<p class="userInfo" th:text="#{message.odabirJezika}">Odabir jezika</p>
+		<select id="locales">
+			<option value="hr"
+				th:selected="${#locale.language == 'hr'}"
+				th:text="#{message.language.hr}">
+			</option>
+			<option value="en"
+				th:selected="${#locale.language == 'en'}"
+				th:text="#{message.language.en}">
+			</option>
+		</select>
+		<form sec:authorize="isAuthenticated()" method="POST" th:action="@{/logout}">
+			<div class="userInfo" th:text="#{message.ulogiranKao}"></div>
+			<div class="userInfo" sec:authentication="name">>Korisnik</div>
+			<input type="submit" th:value="#{message.odjava}" class="btnbtn-danger" />
+		</form>
+	</header>
+    <h1 style="padding-left: 5px;"th:text="#{message.title}">Conference 2018</h1>
+    <img src="/images/logo.png" height="100" width="400"/>
+    <h2 style="padding-left: 5px; display: block;"th:text="#{message.novoPredavanje}">Predloži novno predavanje</h2>
+    
+    <form method="POST" th:object="${predavanje}">
+    	<!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+	    <table class="formCenter">
+	    	<tr>
+	    		<td>
+	    			<label for="predavac.ime"th:text="#{message.predavac}">Predavac: </label>
+	    		</td>
+	    		<td>
+	    			<span class="error" th:if="${#fields.hasErrors('predavac.ime')}" th:errors="*{predavac.ime}">Predavac ime error</span>
+	    			<input type="text" th:field="*{predavac.ime}" />
+	    		</td>
+	    	<tr>
+	    		<td>
+	    			<label for="predavac.pozicija" th:text="#{message.pozicija}">Pozicija u firmi: </label>
+	    		</td>
+	    		<td>
+	    			<span class="error" th:if="${#fields.hasErrors('predavac.pozicija')}" th:errors="*{predavac.pozicija}">Predavac pozicija error</span>
+					<select th:field="*{predavac.pozicija}">
+						<option value="" th:text="#{message.odaberiVrijednost}">---Odaberite vrijednost---</option>
+						<option th:each="pozicija : ${pozicija}" th:value="${pozicija}" th:text="#{'enums.'+${pozicija}}"></option>
+					</select>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>
+	    			<label for="tema" th:text="#{message.tema}">Tema: </label>
+	    		</td>
+	    		<td>
+	    			<span class="error" th:if="${#fields.hasErrors('tema')}" th:errors="*{tema}">Tema error</span>
+	    			<input type="text" th:field="*{tema}"></input>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>
+	    			<label th:text="#{message.kratkiSadrzaj}">Kratki sadržaj: </label>
+	    		</td>
+	    		<td>
+	    			<span class="error" th:if="${#fields.hasErrors('sadrzaj')}" th:errors="*{sadrzaj}">Sadrzaj error</span>
+	    			<textarea th:field="*{sadrzaj}" rows="10" cols="40"></textarea>
+	    		</td>
+	    	</tr>
+	    	<tr>
+	    		<td>
+	    			<label for="predavanje.vrsta" th:text="#{message.vrstaPredavanja}">Vrsta predavanja: </label>
+	    		</td>
+	    		<td>
+	    			<span class="error" th:if="${#fields.hasErrors('vrsta')}" th:errors="*{vrsta}">Tema error</span>
+	    			<select th:field="*{vrsta}">
+						<option value="" th:text="#{message.odaberiVrijednost}">---Odaberite vrijednost---</option>
+						<option th:each="vrsta : ${vrsta}" th:value="${vrsta}" th:text="#{'enums.'+${vrsta}}"></option>
+					</select>
+	    		</td>
+	    	</tr>
+	    	<tr sec:authorize="hasRole('ROLE_ADMIN')">
+	    		<td>
+	    			<label th:text="#{message.objaviPredavanje}">Objavi predavanje: </label>
+	    		</td>
+	    		<td>
+	    			<input type="checkbox" name="objavljeno" th:checked="${objavljeno}" />
+	    		</td>
+	    	</tr>
+	    	<!--<tr>
+	    		<td>
+	    			<input type="radio" name="gender" value="male" checked="checked" />Male
+  					<input type="radio" name="gender" value="female" />Female
+  					<input type="radio" name="gender" value="other" />Other
+	    		</td>
+	    	</tr>-->
+	    	
+	    </table>
+	    <div>
+			<input type="submit" th:value="#{message.submit}">
+		</div>
+    </form>
+   	<div th:fragments="js">
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+    </div>
+</body>
+</html>

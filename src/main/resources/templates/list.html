@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" >
+    <title>List</title>
+</head>
+<body>
+	<header>
+		<p class="userInfo" th:text="#{message.odabirJezika}">Odabir jezika</p>
+		<select id="locales">
+			<option value="hr"
+				th:selected="${#locale.language == 'hr'}"
+				th:text="#{message.language.hr}">
+			</option>
+			<option value="en"
+				th:selected="${#locale.language == 'en'}"
+				th:text="#{message.language.en}">
+			</option>
+		</select>
+			<form sec:authorize="isAuthenticated()" method="POST" th:action="@{/logout}">
+				<div class="userInfo" th:text="#{message.ulogiranKao}"></div>
+				<div class="userInfo" sec:authentication="name">>Korisnik</div>
+				<input type="submit" th:value="#{message.odjava}" class="btnbtn-danger" />
+			</form>
+	</header>
+	<div>
+	    <h1 style="padding-left: 5px;" th:text="#{message.title}">Conference 2018</h1>
+	    <img src="/images/logo.png" height="100" width="400"/>
+	    <!--<h1>nekaj <span th:text="${session.nekaj}"> nekaj</span></h1>-->
+    </div>
+    
+    <div class="formCenter" th:if="${not #lists.isEmpty(datas)}">
+	    <table>
+	        <tr>
+	            <th class=list th:text="#{message.tema}">Tema</th>
+	            <th class=list th:text="#{message.kratkiSadrzaj}">Sadržaj</th>
+	            <th class=list th:text="#{message.vrstaPredavanja}">Vrsta predavanja</th>
+	            <th class=list th:text="#{message.imePredavaca}">Ime predavaca</th>
+	            <th class=list th:text="#{message.pozicija}">Pozicija predavaca</th>
+	        </tr>
+	        <tr th:each="data : ${datas}">
+	            <td th:text="${data.tema}"></td>
+	            <td th:text="${data.sadrzaj}"></td>
+	            <td th:text="#{'enums.'+${data.vrsta}}"></td>
+	            <td th:text="${data.predavac.ime}"></td>
+	            <td th:text="#{'enums.'+${data.predavac.pozicija}}"></td>
+	        </tr>
+	    </table>
+	</div>
+	<div class="formCenter" th:if="${#lists.isEmpty(datas)}">
+		<p th:text="#{message.bazaPodatakaPrazna}">Database is empty</p>
+	</div>
+	<div>
+		<a th:href="@{novoPredavanje}" style="padding-left: 5px;" th:text="#{message.povratak}">Povratak</a>
+	</div>
+	    <div th:fragments="js">
+	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	    	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+	    </div>
+</body>
+</html>

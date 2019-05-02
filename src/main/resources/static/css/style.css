@@ -1,0 +1,56 @@
+@charset "ISO-8859-1";
+body
+{
+	min-width: 100%;
+	margin: 0 auto;
+	text-align: center;
+	background-image: url("../images/bground.png");
+	font-family:"Andalus";
+	font-size: 20px;
+}
+.formCenter
+{
+    display: inline-block;
+    text-align: center;
+}
+div
+{
+    text-align: center;
+	margin: 0 auto;
+}
+.userInfo
+{
+	text-align: right;
+	display: inline
+}
+.lastTable
+{
+	    display: inline-block;
+    text-align: center;
+}
+.fontUp
+{
+	font-size: 20px;
+}
+.error
+{
+	font-size: 17px;
+	color: red;
+	display: block;
+}
+th.list
+{
+	min-width: 200px;
+}
+.cent
+{
+	display: inline-block;
+    text-align: center;
+    width: 1000px;
+}
+header
+{
+	text-align: right;
+	margin-right: 20px;
+	margin-top: 10px;
+}

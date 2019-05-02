@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" >
+    <title>Main Page</title>
+</head>
+<body>
+	<header>
+		<p class="userInfo" th:text="#{message.odabirJezika}">Odabir jezika</p>
+		<select id="locales">
+			<option value="hr"
+				th:selected="${#locale.language == 'hr'}"
+				th:text="#{message.language.hr}">
+			</option>
+			<option value="en"
+				th:selected="${#locale.language == 'en'}"
+				th:text="#{message.language.en}">
+			</option>
+		</select>
+			<form sec:authorize="isAuthenticated()" method="POST" th:action="@{/logout}">
+				<div class="userInfo" th:text="#{message.ulogiranKao}"></div>
+				<div class="userInfo" sec:authentication="name">>Korisnik</div>
+				<input type="submit" th:value="#{message.odjava}" class="btnbtn-danger" />
+			</form>
+	</header>
+    <h1 style="padding-left: 5px;"  th:text="#{message.title}">Conference 2018</h1>
+    <img src="/images/logo.png" height="100" width="400"/>
+    <h1 th:text="#{message.predavanjePrihvaceno}">Predavanje prhivačeno!</h1>
+    <div th:switch="${session.listaPredavanja.size()}">
+  		<p th:case="1" th:text="#{message.brojPredavanja.1(${session.listaPredavanja.size()})}">User is an administrator</p>
+  		<p th:case="2" th:text="#{message.brojPredavanja.2(${session.listaPredavanja.size()})}">User is a manager</p>
+  		<p th:case="3" th:text="#{message.brojPredavanja.3(${session.listaPredavanja.size()})}">User is some other thing</p>
+  		<p th:case="*" th:text="#{message.brojPredavanja.x(${session.listaPredavanja.size()})}">User is some other thing</p>
+    </div>
+    <!--<h1>nekaj <span th:text="${session.nekaj}"> nekaj</span></h1>-->
+    <div sec:authorize="hasRole('ROLE_ADMIN')" >
+		<div th:unless="${predavanje.objavljeno}" >
+			<h5 th:text="#{message.predavanjeNevidljivo}">Predavanje nije objavljeno u programu konferencije.</h5>
+		</div>
+		<div th:if="${predavanje.objavljeno}" >
+			<h5 th:text="#{message.predavanjeVidljivo}">Predavanje je objavljeno i vidljivo u programu konferencije.</h5>
+		</div>
+	</div>
+    <div>
+		<table class="formCenter">
+			<tr>
+				<td th:text="#{message.predavac}">Predavač: </td>
+				<td>
+					<span th:text="${predavanje.predavac.ime}" >PREDAVAC.IME</span>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{message.pozicija}">Pozicija u firmi: </td>
+				<td>
+					<span th:text="#{'enums.'+${predavanje.predavac.pozicija}}" >PREDAVAC.PREZIME</span>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{message.tema}">Tema: </td>
+				<td>
+					<span th:text="${predavanje.tema}" >TEMA</span>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{message.kratkiSadrzaj}">Kratki sadržaj: </td>
+				<td>
+					<span th:text="${predavanje.sadrzaj}" >SADRZAJ</span>
+				</td>
+			</tr>
+			<tr>
+				<td th:text="#{message.vrstaPredavanja}">Vrsta: </td>
+				<td>
+					<span th:text="#{'enums.'+${predavanje.vrsta}}" >VRSTA</span>
+				</td>
+			</tr>
+			<!--<tr>
+				<td>
+					Pratnja: 
+				</td>
+				<td>
+					<span th:text="${predavanje.pratnja}">PRATNJA</span>
+				</td>
+			</tr>-->
+			<!--<tr>
+				<td>
+					Gender: 
+				</td>
+				<td>
+					<span th:text="${predavanje.gender}">PRATNJA</span>
+				</td>
+			</tr>-->
+		</table>
+	</div>
+	<div>
+		<a th:href="@{novoPredavanje}" style="padding-left: 5px;" th:text="#{message.povratak}">Povratak</a>
+		<a th:href="@{resetirajBrojac}" style="padding-left: 5px;" th:text="#{message.resetCounter}">Resetiraj brojac</a>
+		<a th:href="@{list}" style="padding-left: 5px;" th:text="#{message.listaSvihPredavanja}">Lista svih predavanja</a>
+		<a th:href="@{search}" style="padding-left: 5px;" th:text="#{message.pretragaPredavanja}">Pretraga predavanja</a>
+	</div>
+   	<div th:fragments="js">
+    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+    </div>
+</body>
+</html>

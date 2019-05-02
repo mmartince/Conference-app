@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+	<head>
+		<title>Login Page</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" >
+	</head>
+	<body onload='document.f.j_username.focus();'>
+		<header>
+			<select id="locales">
+				<option value="hr"
+					th:selected="${#locale.language == 'hr'}"
+					th:text="#{message.language.hr}">
+				</option>
+				<option value="en"
+					th:selected="${#locale.language == 'en'}"
+					th:text="#{message.language.en}">
+				</option>
+			</select>
+		</header>
+		<h1 style="padding-left: 5px;" th:text="#{message.title}">Conference 2018</h1>
+	    <img class="logo" src="/images/logo.png" height="100" width="400" /><br></br>
+	    <h3 th:text="#{message.loginText}">Please login to proceed</h3>
+		<form class="loginForm formCenter" name='f' method='POST' th:action="@{/login}">
+			<!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+			<table>
+				<tr>
+					<td th:text="#{message.user}">User:</td>
+					<td>
+						<input type='text' name='username' value='admin'>
+					</td>
+				</tr>
+				<tr>
+					<td th:text="#{message.password}">Password:</td>
+					<td>
+						<input type='password' name='password' value='adminpass'/>
+					</td>
+				</tr>
+				<tr>
+					<td th:text="#{message.rememberMe}">Remember me</td>
+					<td>
+						<input type="checkbox" name="remember-me"/>
+					</td>
+				</tr>
+			<tr><td colspan='2'><input name="submit" type="submit" th:value="#{message.submit}"/></td></tr>
+			<tr><td colspan='2'><input name="reset" type="reset" th:value="#{message.reset}"/></td></tr>
+			</table>
+		</form>
+	</body>
+	    <div th:fragments="js">
+	    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	    	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+	    </div>
+</html>
